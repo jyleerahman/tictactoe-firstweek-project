@@ -1,14 +1,16 @@
 import express from "express";
 import ViteExpress from "vite-express";
-import { initialGameState, makeMove, checkEndState } from "./tictactoe";
+import { initialGameState, makeMove } from "./tictactoe";
 
 const app = express();
 app.use(express.json())
 
 let gameState = initialGameState
 
-app.get("/message", (req, res) => res.send("Hello from express!"));
+//wire to useQuery
 app.get("/game", (req, res) => res.send(gameState))
+
+//wire to useMutation
 app.post("/move", (req, res) => {
     const { index } = req.body as { index: number }
     if (typeof index !== "number") {
