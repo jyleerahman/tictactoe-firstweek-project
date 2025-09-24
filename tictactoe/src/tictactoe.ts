@@ -13,6 +13,22 @@ export const initialGameState: GameState = {
   turn: "O",
 }
 
+export function makeMove(gameState: GameState, index: number): GameState {
+
+  if (gameState.board[index] !== null || gameState.endState) return gameState
+
+  const newBoard = [...gameState.board]
+  newBoard[index] = gameState.turn
+  const turn = gameState.turn === "X" ? "O" : "X"
+
+  // check if the game is over
+  const endState = checkEndState({ ...gameState, board: newBoard })
+
+  return { ...gameState, board: newBoard, turn, endState }
+
+}
+
+
 export function checkEndState(gameState: GameState): EndState {
 
   const winningLines = [[0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6]]
@@ -27,19 +43,4 @@ export function checkEndState(gameState: GameState): EndState {
   if (boardIsFull) return 'tie'
 
   return undefined
-}
-
-export function makeMove(gameState: GameState, index: number): GameState {
-
-  if (gameState.board[index] !== null || gameState.endState) return gameState
-
-  const newBoard = [...gameState.board]
-  newBoard[index] = gameState.turn
-  const turn = gameState.turn === "X" ? "O" : "X"
-
-  // check if the game is over
-  const endState = checkEndState(gameState)
-
-  return { ...gameState, board: newBoard, turn, endState }
-
 }
